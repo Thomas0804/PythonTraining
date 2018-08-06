@@ -1,0 +1,39 @@
+print(__doc__)
+import math
+import numpy as np
+from sklearn.svm import SVR
+import matplotlib.pyplot as plt
+import random
+# #############################################################################
+# Generate sample data
+X = np.sort(8 * np.random.rand(20, 1)-4, axis=0)
+y = np.power(X,2).ravel()
+
+
+# #############################################################################
+# Add noise to targets
+y[::1] += (1*(np.random.rand())-25)
+
+# #############################################################################
+# Fit regression model
+svr_rbf = SVR(kernel='rbf', C=1e3, gamma=0.1)
+svr_lin = SVR(kernel='linear', C=1e3)
+svr_poly = SVR(kernel='poly', C=1e3, degree=2)
+y_rbf = svr_rbf.fit(X, y).predict(X)
+y_lin = svr_lin.fit(X, y).predict(X)
+y_poly = svr_poly.fit(X, y).predict(X)
+
+# #############################################################################
+# Look at the results
+lw = 2
+plt.scatter(X, y, color='darkorange', label='data')
+plt.plot(X, y_rbf, color='navy', lw=lw, label='RBF model')
+#plt.plot(X, y_lin, color='c', lw=lw, label='Linear model')
+#plt.plot(X, y_poly, color='cornflowerblue', lw=lw, label='Polynomial model')
+plt.xlabel('x')
+
+plt.ylabel('y')
+plt.title('neuralnet function approximation')
+plt.legend()
+
+plt.show()
